@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Flask CRUD App {% endblock title %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col md-12">
+				<div class="jumbotron p-3">
+					<h2>Manage 
+						<b>
+							Employees 
+							<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">
+								Add New Employees
+							</button> 
+						</b> 
+					</h2>
+
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}
+							{% for message in messages %}
+							<div class="alert alert-success alert-dismissable" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="close">
+									<span aria-hidden="true">&#10005;</span>
+								</button>
+								{{ message }}
+							</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith%}
+
+					<table class="table table-hover table-dark thead-dark">
+						<tr>
+							<th>ID</th>
+							<th>Username</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Email</th>
+							<th>Date Of Birth</th>
+							<th>Phone</th>
+							<th>Actions</th>
+						</tr>
+
+						{% for row in employees %}
+						<tr>
+							<td>{{ row.id }}</td>
+							<td>{{ row.userName }}</td>
+							<td>{{ row.firstName }}</td>
+							<td>{{ row.lastName }}</td>
+							<td>{{ row.email }}</td>
+							<td>{{ row.dateOfBirth }}</td>
+							<td>{{ row.phone }}</td>
+							<td>
+								<a href="/edit/{{ row.id }}" data-toggle="modal" data-target="#modaledit{{ row.id }}" class="btn float-right btn-warning btn-xs">Edit</a>
+								<a href="/delete/{{ row.id }}" class="btn btn-danger btn-xs float-right" onclick="return confirm('Are you sure you want to delete?')">Remove</a>
+							</td>
+						</tr>
+
+						<!-- Modal for Update/Edit Employee -->
+						<div id="modaledit{{ row.id }}" class="modal fade" role="dialog">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Update Employee</h4>
+									</div>
+						
+								<div class="modal-body">
+									<form action="{{ url_for('edit') }}" method="POST">
+
+										<div class="form-group">
+											<label>Username:</label>
+											<input type="hidden" name="id" value="{{ row.id }}">
+											<input type="text" class="form-control" name="userName" value="{{ row.userName }}">
+										</div>
+
+										<div class="form-group">
+											<label>First Name:</label>
+											<input type="text" class="form-control" name="firstName" value="{{ row.firstName }}">
+										</div>
+
+										<div class="form-group">
+											<label>Last Name:</label>
+											<input type="text" class="form-control" name="lastName" value="{{ row.lastName }}">
+										</div>
+
+										<div class="form-group">
+											<label>Email:</label>
+											<input type="email" class="form-control" name="email" value="{{ row.email }}">
+										</div>
+
+										<div class="form-group">
+											<label>Date Of Birth:</label>
+											<input type="date" class="form-control" name="dateOfBirth" value="{{ row.dateOfBirth }}">
+										</div>
+							
+										<div class="form-group">
+											<label>Phone:</label>
+											<input type="number" class="form-control" name="phone" value="{{ row.phone }}">
+										</div>
+
+										<div class="form-group">
+											<button class="btn btn-primary" type="submit">Update Employee</button>
+										</div>
+									</form>
+								</div>
+						
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</table>
+		</div>
+			
+
+		<!-- Modal Add new employee -->
+		<div id="mymodal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Employee</h4>
+					</div>
+		
+				<div class="modal-body">
+					<form action="{{ url_for('insert')}}" method="POST">
+						<div class="form-group">
+							<label>Username:</label>
+							<input type="hidden" name="id" value="">
+							<input type="text" class="form-control" name="userName" required="1">
+						</div>
+
+						<div class="form-group">
+							<label>First Name:</label>
+							<input type="hidden" name="id" value="">
+							<input type="text" class="form-control" name="firstName" required="1">
+						</div>
+
+						<div class="form-group">
+							<label>Last Name:</label>
+							<input type="hidden" name="id" value="">
+							<input type="text" class="form-control" name="lastName" required="1">
+						</div>
+
+						<div class="form-group">
+							<label>Email:</label>
+							<input type="email" class="form-control" name="email" required="1">
+						</div>
+
+						<div class="form-group">
+							<label>Date Of Birth:</label>
+							<input type="date" class="form-control" name="dateOfBirth" required="1">
+						</div>
+			
+						<div class="form-group">
+							<label>Phone:</label>
+							<input type="number" class="form-control" name="phone" required="1">
+						</div>
+
+						<div class="form-group">
+							<button class="btn btn-primary" type="submit">Add Employee</button>
+						</div>
+					</form>
+				</div>
+		
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			
+			
+			</div>
+			
+			</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock body %}
