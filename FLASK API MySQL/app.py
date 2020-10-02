@@ -49,7 +49,7 @@ def insert():
 		db.session.add(my_data)
 		db.session.commit()
 
-		flash("Employee Inserted Successfully!")
+		flash("Employee Inserted Successfully!", 'success')
 
 		return redirect(url_for('index'))
 
@@ -68,9 +68,10 @@ def edit():
 
 		db.session.commit()
 
-		flash("Employee Updated Successfully!")
+		flash("Employee Updated Successfully!", 'success')
 
 		return redirect(url_for('index'))
+
 
 @app.route('/delete/<id>', methods=["GET", "POST"])
 def delete(id):
@@ -78,7 +79,7 @@ def delete(id):
 	db.session.delete(my_data)
 	db.session.commit()
 
-	flash("Employee Deleted Successfully!")
+	flash("Employee Deleted Successfully!", 'warning')
 
 	return redirect(url_for('index'))
 
