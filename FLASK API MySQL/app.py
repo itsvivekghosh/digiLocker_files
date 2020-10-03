@@ -29,10 +29,12 @@ class Employee(db.Model):
 		self.dateOfBirth = dateOfBirth
 
 
+
 @app.route('/')
 def index():
 	all_data = Employee.query.all()
 	return render_template('index.html', employees = all_data)
+
 
 
 @app.route('/insert', methods = ['POST'])
